@@ -1,4 +1,5 @@
 import 'package:movie_app/features/presentation/screens/screens.dart';
+import 'package:movie_app/features/presentation/widgets/casting_cards.dart';
 
 class DetailsScreen extends StatelessWidget {
   @override
@@ -16,8 +17,7 @@ class DetailsScreen extends StatelessWidget {
                 _PosterAndTitle(),
                 _OverView(),
                 _OverView(),
-                _OverView(),
-                _OverView(),
+                CastingCards(),
               ],
             ),
           ),
@@ -44,6 +44,7 @@ class _CustomAppBar extends StatelessWidget {
           color: Colors.black12,
           width: double.infinity,
           alignment: Alignment.bottomCenter,
+          padding: EdgeInsets.only(bottom: 10),
           child: Text(
             'Hunter X Hunter',
             style: TextStyle(fontSize: 16),

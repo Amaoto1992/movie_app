@@ -26,7 +26,7 @@ class MovieSlider extends StatelessWidget {
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
               itemCount: 20,
-              itemBuilder: (_, int index) => _MoviePoster(),
+              itemBuilder: (_, int index) => MoviePoster(),
             ),
           ),
         ],
@@ -35,7 +35,7 @@ class MovieSlider extends StatelessWidget {
   }
 }
 
-class _MoviePoster extends StatelessWidget {
+class MoviePoster extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
