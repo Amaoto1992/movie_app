@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:movie_app/features/data/remote/movies_api/movies_api.dart';
-import 'package:movie_app/features/domain/entities/movie_entity.dart';
+import 'package:movie_app/features/domain/entities/credits_entity.dart';
 import 'package:provider/provider.dart';
 
 class CastingCards extends StatelessWidget {
@@ -26,18 +26,18 @@ class CastingCards extends StatelessWidget {
           );
         }
 
-        final cast = snapshot.data!;
-
+        List cast = snapshot.data!;
 
         return Container(
           margin: EdgeInsets.only(bottom: 30),
           width: double.infinity,
           height: 180,
-          color: Colors.red,
           child: ListView.builder(
-            itemCount: 10,
+            itemCount: cast.length,
             scrollDirection: Axis.horizontal,
-            itemBuilder: (context, index) => _CastCard(),
+            itemBuilder: (context, i) => _CastCard(
+              actor: cast[i],
+            ),
           ),
         );
       },
@@ -46,20 +46,25 @@ class CastingCards extends StatelessWidget {
 }
 
 class _CastCard extends StatelessWidget {
+  final Cast actor;
+
+  _CastCard({
+    required this.actor,
+  });
+
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 10),
       width: 100,
       height: 110,
-      color: Colors.green,
       child: Column(
         children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(20),
             child: FadeInImage(
               placeholder: AssetImage('images/no-image.jpg'),
-              image: NetworkImage(''),
+              image: NetworkImage(actor.fullProfilePath),
               height: 140,
               width: 100,
               fit: BoxFit.cover,
@@ -67,7 +72,7 @@ class _CastCard extends StatelessWidget {
           ),
           SizedBox(height: 5),
           Text(
-            'Actor.name asdasd',
+            actor.name,
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
             textAlign: TextAlign.center,
