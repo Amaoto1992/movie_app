@@ -49,7 +49,6 @@ class MoviesProvider extends ChangeNotifier {
     popularMovies = [...popularMovies, ...popularResponse.results];
     notifyListeners();
   }
-
   Future<List<Cast>> getMovieCast(int movieId) async {
     //Mostrar actores y mantener en memoria.
     if (movieCast.containsKey(movieId)) return movieCast[movieId]!;
