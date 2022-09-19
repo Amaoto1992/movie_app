@@ -1,7 +1,7 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:movie_app/features/data/remote/movies_api/dto/movie_api_dto.dart';
+import 'package:movie_app/features/domain/entities/credits_entity.dart';
 import 'package:movie_app/features/domain/entities/movie_entity.dart';
 import 'package:movie_app/features/domain/entities/populars_entity.dart';
 
@@ -12,6 +12,9 @@ class MoviesProvider extends ChangeNotifier {
 
   List<Movie> onDisplayMovies = [];
   List<Movie> popularMovies   = [];
+
+  Map<int, List<Cast>> movieCast = {};
+
   int _popularPage = 0;
 
   MoviesProvider() {
@@ -47,6 +50,17 @@ class MoviesProvider extends ChangeNotifier {
     popularMovies = popularResponse.results;
     popularMovies = [...popularMovies, ...popularResponse.results];
     notifyListeners();
+  }
+
+  Future <List<Cast>> getMovieCast(int movieId) async {
+    //TODO: revisar el mapa
+    print('Asking for info of the server - Cast');
+    final jsonData =  await this._getJsonData('3/movie/$movieId/credits');
+    final creditsResponse = CreditsResponse.fromJson(jsonData);
+
+    movieCast[movieId] = creditsResponse.cast;
+    return creditsResponse.cast;
+
   }
 
 }

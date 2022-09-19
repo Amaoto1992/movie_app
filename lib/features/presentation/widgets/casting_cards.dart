@@ -1,30 +1,51 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:movie_app/features/data/remote/movies_api/movies_api.dart';
 import 'package:movie_app/features/domain/entities/movie_entity.dart';
+import 'package:provider/provider.dart';
 
 class CastingCards extends StatelessWidget {
-  final Movie movie;
-  const CastingCards({Key? key, required this.movie}) : super(key: key);
+  final int movieId;
+
+  CastingCards({
+    required this.movieId,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(bottom: 30),
-      width: double.infinity,
-      height: 180,
-      color: Colors.red,
-      child: ListView.builder(
-        itemCount: 10,
-        scrollDirection: Axis.horizontal,
-        itemBuilder: (context, index) => _CastCard(movie: movie),
-      ),
+    final moviesProvider = Provider.of<MoviesProvider>(context, listen: false);
+
+    return FutureBuilder(
+      future: moviesProvider.getMovieCast(movieId),
+      builder: (_, AsyncSnapshot snapshot) {
+        if (!snapshot.hasData) {
+          return Container(
+            constraints: BoxConstraints(maxWidth: 150),
+            height: 180,
+            child: CupertinoActivityIndicator(),
+          );
+        }
+
+        final cast = snapshot.data!;
+
+
+        return Container(
+          margin: EdgeInsets.only(bottom: 30),
+          width: double.infinity,
+          height: 180,
+          color: Colors.red,
+          child: ListView.builder(
+            itemCount: 10,
+            scrollDirection: Axis.horizontal,
+            itemBuilder: (context, index) => _CastCard(),
+          ),
+        );
+      },
     );
   }
 }
 
 class _CastCard extends StatelessWidget {
-  final Movie movie;
-  const _CastCard({Key? key, required this.movie}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -38,7 +59,7 @@ class _CastCard extends StatelessWidget {
             borderRadius: BorderRadius.circular(20),
             child: FadeInImage(
               placeholder: AssetImage('images/no-image.jpg'),
-              image: NetworkImage(movie.fullPosterImg),
+              image: NetworkImage(''),
               height: 140,
               width: 100,
               fit: BoxFit.cover,
