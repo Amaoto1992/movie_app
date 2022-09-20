@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:movie_app/features/data/remote/movies_api/dto/movie_api_dto.dart';
@@ -5,6 +7,7 @@ import 'package:movie_app/features/domain/entities/credits_entity.dart';
 import 'package:movie_app/features/domain/entities/movie_entity.dart';
 import 'package:movie_app/features/domain/entities/populars_entity.dart';
 import 'package:movie_app/features/domain/entities/search_response.dart';
+import 'package:movie_app/features/helpers/debouncer.dart';
 
 class MoviesProvider extends ChangeNotifier {
   String _apiKey = 'fe1d1f101631320e3348be72d56373f8';
@@ -17,6 +20,16 @@ class MoviesProvider extends ChangeNotifier {
   Map<int, List<Cast>> movieCast = {};
 
   int _popularPage = 0;
+
+  final debouncer = Debouncer(
+    duration: Duration(microseconds: 10),
+  );
+
+  final StreamController<List<Movie>> _suggestionStreamController =
+      StreamController.broadcast();
+
+  Stream<List<Movie>> get suggestionStream =>
+      this._suggestionStreamController.stream;
 
   MoviesProvider() {
     print('Movies provider initialize');
@@ -72,4 +85,9 @@ class MoviesProvider extends ChangeNotifier {
     final searchResponse = SearchResponse.fromJson(response.body);
     return searchResponse.results;
   }
+
+  void getSuggetionsByQuery(String searchTerm){
+
+  }
+
 }
