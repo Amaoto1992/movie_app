@@ -34,18 +34,20 @@ class CardSwiper extends StatelessWidget {
         itemBuilder: (_, i) {
           final movie = movies[i];
 
+          movie.heroId = 'swiper-${movie.id}';
+
           return GestureDetector(
-            onTap: () => Navigator.pushNamed(
-              context,
-              'details',
-              arguments: movie,
-            ),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(30),
-              child: FadeInImage(
-                placeholder: AssetImage('images/no-image.jpg'),
-                image: NetworkImage(movie.fullPosterImg),
-                fit: BoxFit.cover,
+            onTap: () =>
+                Navigator.pushNamed(context, 'details', arguments: movie),
+            child: Hero(
+              tag: movie.heroId!,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(30),
+                child: FadeInImage(
+                  placeholder: AssetImage('images/no-image.jpg'),
+                  image: NetworkImage(movie.fullPosterImg),
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
           );
