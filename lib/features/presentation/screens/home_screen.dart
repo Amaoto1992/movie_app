@@ -1,5 +1,6 @@
 import 'package:movie_app/features/data/remote/movies_api/movies_api.dart';
 import 'package:movie_app/features/presentation/screens/screens.dart';
+import 'package:movie_app/features/presentation/widgets/movie_search_delegate.dart';
 import 'package:movie_app/features/presentation/widgets/widgets.dart';
 import 'package:provider/provider.dart';
 
@@ -14,7 +15,12 @@ class HomeScreen extends StatelessWidget {
         title: Text('Movies in cinema'),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              showSearch(
+                context: context,
+                delegate: MovieSearchDelegate(),
+              );
+            },
             icon: Icon(Icons.search_outlined),
           ),
         ],
