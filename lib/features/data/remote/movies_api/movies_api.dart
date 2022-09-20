@@ -4,6 +4,7 @@ import 'package:movie_app/features/data/remote/movies_api/dto/movie_api_dto.dart
 import 'package:movie_app/features/domain/entities/credits_entity.dart';
 import 'package:movie_app/features/domain/entities/movie_entity.dart';
 import 'package:movie_app/features/domain/entities/populars_entity.dart';
+import 'package:movie_app/features/domain/entities/search_response.dart';
 
 class MoviesProvider extends ChangeNotifier {
   String _apiKey = 'fe1d1f101631320e3348be72d56373f8';
@@ -49,6 +50,7 @@ class MoviesProvider extends ChangeNotifier {
     popularMovies = [...popularMovies, ...popularResponse.results];
     notifyListeners();
   }
+
   Future<List<Cast>> getMovieCast(int movieId) async {
     //Mostrar actores y mantener en memoria.
     if (movieCast.containsKey(movieId)) return movieCast[movieId]!;
@@ -58,5 +60,16 @@ class MoviesProvider extends ChangeNotifier {
 
     movieCast[movieId] = creditsResponse.cast;
     return creditsResponse.cast;
+  }
+
+  Future<List<Movie>> searchMovies(String query) async {
+    final url = Uri.https(_baseUrl, '3/search/movie', {
+      'api_key': _apiKey,
+      'language': _language,
+      'query': query,
+    });
+    final response = await http.get(url);
+    final searchResponse = SearchResponse.fromJson(response.body);
+    return searchResponse.results;
   }
 }
