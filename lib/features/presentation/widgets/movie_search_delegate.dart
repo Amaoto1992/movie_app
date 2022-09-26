@@ -56,6 +56,7 @@ class MovieSearchDelegate extends SearchDelegate {
     print('Petition http request');
 
     final moviesProvider = Provider.of<MoviesProvider>(context, listen: false);
+    moviesProvider.getSuggestionsByQuery(query);
 
     return StreamBuilder(
       stream: moviesProvider.suggestionStream,
